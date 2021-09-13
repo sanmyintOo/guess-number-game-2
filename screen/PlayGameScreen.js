@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import React, { useState, useRef } from "react";
+import { View, Text, StyleSheet, Pressable, Alert } from "react-native";
 
 import NumberContainer from "../components/NumberContainer";
 import Card from "../components/Card";
@@ -22,15 +22,42 @@ const PlayGameScreen = (props) => {
     generateNumber(1, 100, props.userGuess)
   );
 
+  const currentLow = useRef(1);
+  const currentHigh = useRef(100);
+
+  const btnPressHandler = (direction) => {
+    if (
+      (direction === "lower" && currentGuess < props.userGuess) ||
+      (direction === "greater" && currentGuess > props.userGuess)
+    ) {
+      Alert.alert("Don't lie!", "Your answer is not correct", [
+        {
+          text: "Okay",
+          style: "cancel",
+        },
+      ]);
+    } else {
+      if (direction === "lower") {
+        currentHigh.current = currentGuess;
+      } else {
+        currentLow.current = currentGuess;
+      }
+
+      setCurrentGuess(
+        generateNumber(currentLow.current, currentHigh.current, props.userGuess)
+      );
+    }
+  };
+
   return (
     <View style={styles.screen}>
       <Text>Opponent's Choice</Text>
       <NumberContainer>{currentGuess}</NumberContainer>
       <Card style={styles.btnContainer}>
-        <Pressable>
+        <Pressable onPress={btnPressHandler.bind(this, "lower")}>
           <Text>LOWER</Text>
         </Pressable>
-        <Pressable>
+        <Pressable onPress={btnPressHandler.bind(this, "greater")}>
           <Text>GREATER</Text>
         </Pressable>
       </Card>

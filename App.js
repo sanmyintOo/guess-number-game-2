@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Alert } from "react-native";
 
 import Header from "./components/Header";
 import Gamescreen from "./screen/Gamescreen";
@@ -15,7 +15,9 @@ export default function App() {
   let content = <Gamescreen onStartGame={startGameHandler} />;
 
   if (userNumber) {
-    content = <PlayGameScreen userGuess={userNumber} />;
+    content = (
+      <PlayGameScreen userGuess={userNumber}/>
+    );
   }
 
   return (
