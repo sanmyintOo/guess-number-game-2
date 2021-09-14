@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef,  useEffect } from "react";
 import { View, Text, StyleSheet, Pressable, Alert } from "react-native";
 
 import NumberContainer from "../components/NumberContainer";
@@ -24,6 +24,14 @@ const PlayGameScreen = (props) => {
 
   const currentLow = useRef(1);
   const currentHigh = useRef(100);
+  const [guessRounds, setGuessRounds] = useState(0);
+  const { userChoice, onGameOver } = props;
+
+  useEffect(() => {
+    if (currentGuess === props.userGuess) {
+      props.onGameOver(guessRounds);
+    }
+  }, [currentGuess, userChoice, onGameOver]);
 
   const btnPressHandler = (direction) => {
     if (
@@ -37,6 +45,7 @@ const PlayGameScreen = (props) => {
         },
       ]);
     } else {
+
       if (direction === "lower") {
         currentHigh.current = currentGuess;
       } else {
@@ -44,8 +53,10 @@ const PlayGameScreen = (props) => {
       }
 
       setCurrentGuess(
-        generateNumber(currentLow.current, currentHigh.current, props.userGuess)
+        generateNumber(currentLow.current, currentHigh.current, currentGuess)
       );
+
+      setGuessRounds(guessRounds + 1);
     }
   };
 
