@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, Pressable, Alert } from "react-native";
 
 import NumberContainer from "../components/NumberContainer";
 import Card from "../components/Card";
+import DefaultStyles from '../constant/default-style';
+import MainButton from "../components/MainButton";
 
 const PlayGameScreen = (props) => {
   const generateNumber = (min, max, excluded) => {
@@ -62,15 +64,15 @@ const PlayGameScreen = (props) => {
 
   return (
     <View style={styles.screen}>
-      <Text>Opponent's Choice</Text>
+      <Text style={DefaultStyles.title}>Opponent's Choice</Text>
       <NumberContainer>{currentGuess}</NumberContainer>
       <Card style={styles.btnContainer}>
-        <Pressable onPress={btnPressHandler.bind(this, "lower")}>
-          <Text>LOWER</Text>
-        </Pressable>
-        <Pressable onPress={btnPressHandler.bind(this, "greater")}>
-          <Text>GREATER</Text>
-        </Pressable>
+        <MainButton onPress={btnPressHandler.bind(this, "lower")}>
+          LOWER
+        </MainButton>
+        <MainButton onPress={btnPressHandler.bind(this, "greater")}>
+          GREATER
+        </MainButton>
       </Card>
     </View>
   );
